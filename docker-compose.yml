@@ -6,6 +6,18 @@ web:
     - db:db
   expose:
     - 3000
+  volumes:
+    - /fms
+
+frontend:
+  restart: always
+  build: ./nginx/
+  ports:
+    - "80"
+  links:
+    - web:web
+  volumes-from:
+    - web
 
 db:
   restart: always
@@ -20,11 +32,3 @@ data:
   image: dalekurt/postgres:9.3
   volumes:
     - /tmp/data:/var/lib/postgresql/data
-
-frontend:
-  restart: always
-  build: ./nginx/
-  ports:
-    - "80:80"
-  links:
-    - web:web
