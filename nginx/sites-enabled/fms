@@ -5,13 +5,16 @@
 #
 # See our installation help at http://fixmystreet.org/
 
+upstream fms-app {
+    server app:9000;
+}
 server {
 
-    access_log /var/www/fixmystreet/logs/access.log;
-    error_log /var/www/fixmystreet/logs/error.log;
+    access_log /fms/logs/access.log;
+    error_log /fms/logs/error.log;
 
     listen 80;
-    root /var/www/fixmystreet/fixmystreet/web;
+    root /fms/web;
     error_page 503 /down.html;
 
     # Make sure that Javascript and CSS are compressed.  (HTML is
@@ -53,7 +56,7 @@ server {
 
     location /admin {
         auth_basic "FixMyStreet admin interface";
-        auth_basic_user_file /var/www/fixmystreet/admin-htpasswd;
+        auth_basic_user_file /fms/admin-htpasswd;
         try_files $uri @catalyst;
     }
 
@@ -72,6 +75,6 @@ server {
         include /etc/nginx/fastcgi_params;
         fastcgi_param PATH_INFO $fastcgi_script_name;
         fastcgi_param SCRIPT_NAME '';
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_pass http://fms-app;
     }
 }

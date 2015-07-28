@@ -8,6 +8,7 @@ web:
     - 3000
   volumes:
     - /fms
+  command: bash -c "/fms/script/fixmystreet_app_server.pl -d --fork"
 
 frontend:
   restart: always
@@ -21,14 +22,7 @@ frontend:
 
 db:
   restart: always
-  image: dalekurt/postgres:9.3
-  volumes_from:
-    - data
+  image: dalekurt/postgres:9.4
   ports:
     - "5432:5432"
 
-data:
-  restart: always
-  image: dalekurt/postgres:9.3
-  volumes:
-    - /tmp/data:/var/lib/postgresql/data

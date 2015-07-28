@@ -3,7 +3,9 @@ MAINTAINER Dale-Kurt Murray "dalekurt.murray@gmail.com"
 
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
 	make jhead liblocale-gettext-perl perl perlmagick libmath-bigint-gmp-perl \
-	gettext ruby1.9.1 postgresql gnuplot ttf-bitstream-vera libexpat1-dev
+	gettext ruby1.9.1 postgresql gnuplot ttf-bitstream-vera libexpat1-dev \
+	&& apt-get clean all \
+	&& rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/mysociety/fixmystreet.git /fms
 
@@ -24,3 +26,6 @@ RUN psql -h db -U fms fms < db/alert_types.sql
 
 # Setup config
 ADD general.yml /fms/conf/general.yml
+
+
+EXPOSE 9000
