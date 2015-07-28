@@ -1,6 +1,6 @@
-web:
+app:
   restart: always
-  build: ./web/
+  build: ./app/
   command: script/fixmystreet_app_server.pl -d --fork
   links:
     - db:db
@@ -18,11 +18,11 @@ frontend:
   links:
     - web:web
   volumes-from:
-    - web
+    - app
 
 db:
   restart: always
   image: dalekurt/postgres:9.4
   ports:
     - "5432:5432"
-
+  env_file: db.env
