@@ -1,7 +1,8 @@
 app:
   restart: always
-  build: ./app/
-  command: script/fixmystreet_app_server.pl -d --fork
+#  build: ./app/
+  image: fms:test
+  command: /fms/script/fixmystreet_app_server.pl -d --fork
   links:
     - db:db
   expose:
@@ -10,14 +11,14 @@ app:
     - /fms
   command: bash -c "/fms/script/fixmystreet_app_server.pl -d --fork"
 
-frontend:
+nginx:
   restart: always
   build: ./nginx/
   ports:
     - "80"
   links:
-    - web:web
-  volumes-from:
+    - app:app
+  volumes_from:
     - app
 
 db:

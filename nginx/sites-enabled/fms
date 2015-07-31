@@ -6,7 +6,7 @@
 # See our installation help at http://fixmystreet.org/
 
 upstream fms-app {
-    server app:9000;
+    server app:3000;
 }
 server {
 

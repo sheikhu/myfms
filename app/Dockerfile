@@ -1,31 +1,54 @@
-FROM stackbrew/ubuntu:14.04
+FROM ubuntu:14.04
 MAINTAINER Dale-Kurt Murray "dalekurt.murray@gmail.com"
 
-RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-	make jhead liblocale-gettext-perl perl perlmagick libmath-bigint-gmp-perl \
-	gettext ruby1.9.1 postgresql gnuplot ttf-bitstream-vera libexpat1-dev \
-	&& apt-get clean all \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q git
 
-RUN git clone https://github.com/mysociety/fixmystreet.git /fms
+        #&& apt-get clean all \
+        #&& rm -rf /var/lib/apt/lists/*
 
-WORKDIR /fms
+RUN cachebuster=b953b35 git clone --recursive https://github.com/mysociety/fixmystreet.git
+
+WORKDIR /fixmystreet
+
+# Install packages
+#RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
+RUN apt-get install -y -q \
+	make \
+	jhead \
+	liblocale-gettext-perl \
+	memcached \
+	perl \
+	perlmagick \
+	libmath-bigint-gmp-perl \
+	gettext \
+	ruby1.9.1 \
+	postgresql \
+	postgresql-server-dev-all \
+	gnuplot \
+	ttf-bitstream-vera \
+	libexpat1-dev
 
 # Install prerequisite Perl modules
-RUN bin/install_perl_modules
+#RUN bin/install_perl_modules
+RUN /fixmystreet/bin/cpanm -l /fixmystreet/local-carton Carton
+
+ENV PATH /fixmystreet/local-carton/bin:$PATH
+ENV PERL5LIB /fixmystreet/local-carton/lib/perl5
+RUN carton install --deployment --without uk --without zurich --without open311-endpoint
+RUN carton install Image::Magick
 
 # Install compass and generate CSS
 RUN gem install --user-install --no-ri --no-rdoc bundler
 RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install > --deployment --path ../gems --binstubs ../gem-bin
 RUN bin/make_css
 
-# Install database schema
-RUN psql -h db -U fms fms < db/schema.sql
-RUN psql -h db -U fms fms < db/generate_secret.sql
-RUN psql -h db -U fms fms < db/alert_types.sql
+# Copy shell script
+#ADD install-database.sh /tmp/install-database.sh
+#RUN chmod +x /tmp/install-database.sh
 
 # Setup config
 ADD general.yml /fms/conf/general.yml
 
+EXPOSE 3000
 
-EXPOSE 9000
+#ENTRYPOINT ["script/fixmystreet_app_server.pl", "-d", "--fork"]
