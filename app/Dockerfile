@@ -47,7 +47,7 @@ RUN bin/make_css
 #RUN chmod +x /tmp/install-database.sh
 
 # Setup config
-ADD general.yml /fms/conf/general.yml
+ADD general.yml /fixmystreet/conf/general.yml
 
 EXPOSE 3000
 
