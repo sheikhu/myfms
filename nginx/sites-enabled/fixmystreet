@@ -1,0 +1,26 @@
+# An example configuration for running FixMyStreet under nginx.  You
+# will also need to set up the FixMyStreet Catalyst FastCGI backend.
+# An example sysvinit script to help with this is shown given in the file
+# sysvinit-catalyst-fastcgi.example in this directory.
+#
+# See our installation help at http://fixmystreet.org/
+
+upstream fixmystreet {
+    server app:3000;
+}
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+
+	server_name dev.local;
+
+        location / {
+                proxy_pass http://fixmystreet/;
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection 'upgrade';
+                proxy_set_header Host $host;
+                proxy_cache_bypass $http_upgrade;
+        }
+}

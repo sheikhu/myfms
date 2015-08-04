@@ -5,32 +5,34 @@ RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q g
 
         #&& apt-get clean all \
         #&& rm -rf /var/lib/apt/lists/*
+RUN locale-gen en_US.utf8 && \
+	cachebuster=b953b35 git clone --recursive https://github.com/mysociety/fixmystreet.git
 
-RUN cachebuster=b953b35 git clone --recursive https://github.com/mysociety/fixmystreet.git
+ENV LANG en_US.UTF-8
 
 WORKDIR /fixmystreet
 
 # Install packages
-#RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
-RUN apt-get install -y -q \
-	make \
-	jhead \
-	liblocale-gettext-perl \
-	memcached \
-	perl \
-	perlmagick \
-	libmath-bigint-gmp-perl \
-	gettext \
-	ruby1.9.1 \
-	postgresql \
-	postgresql-server-dev-all \
-	gnuplot \
-	ttf-bitstream-vera \
-	libexpat1-dev
+RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
+#RUN apt-get install -y -q \
+#	make \
+#	jhead \
+#	liblocale-gettext-perl \
+#	memcached \
+#	perl \
+#	perlmagick \
+#	libmath-bigint-gmp-perl \
+#	gettext \
+#	ruby1.9.1 \
+#	postgresql \
+#	postgresql-server-dev-all \
+#	gnuplot \
+#	ttf-bitstream-vera \
+#	libexpat1-dev
 
 # Install prerequisite Perl modules
-#RUN bin/install_perl_modules
-RUN /fixmystreet/bin/cpanm -l /fixmystreet/local-carton Carton
+RUN bin/install_perl_modules
+#RUN /fixmystreet/bin/cpanm -l /fixmystreet/local-carton Carton
 
 ENV PATH /fixmystreet/local-carton/bin:$PATH
 ENV PERL5LIB /fixmystreet/local-carton/lib/perl5
@@ -43,12 +45,15 @@ RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install > --deployment -
 RUN bin/make_css
 
 # Copy shell script
-#ADD install-database.sh /tmp/install-database.sh
-#RUN chmod +x /tmp/install-database.sh
+ADD install-database.sh /tmp/install-database.sh
+RUN chmod +x /tmp/install-database.sh
+ADD pgpass /root/.pgpass
+RUN chmod 0600 /root/.pgpass
 
 # Setup config
 ADD general.yml /fixmystreet/conf/general.yml
 
 EXPOSE 3000
 
-#ENTRYPOINT ["script/fixmystreet_app_server.pl", "-d", "--fork"]
+CMD ["/bin/bash"]
+ENTRYPOINT ["script/fixmystreet_app_server.pl", "-d", "--fork"]

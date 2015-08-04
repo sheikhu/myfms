@@ -6,6 +6,8 @@ app:
     - db:db
   expose:
     - 3000
+  ports:
+    - "3000:3000"
   volumes:
     - /fixmystreet
   command: bash -c "/fixmystreet/script/fixmystreet_app_server.pl -d --fork"
@@ -14,7 +16,7 @@ nginx:
   restart: always
   build: ./nginx/
   ports:
-    - "80"
+    - "80:80"
   links:
     - app:app
   volumes_from:
