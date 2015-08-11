@@ -29,7 +29,7 @@ RUN bin/make_css
 # Copy shell script
 ADD install-database.sh /tmp/install-database.sh
 RUN chmod +x /tmp/install-database.sh
-ADD pgpass /root/.pgpass
+#ADD pgpass /root/.pgpass
 RUN chmod 0600 /root/.pgpass
 
 # Setup config
