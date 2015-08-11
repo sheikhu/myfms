@@ -3,8 +3,6 @@ MAINTAINER Dale-Kurt Murray "dalekurt.murray@gmail.com"
 
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q git
 
-        #&& apt-get clean all \
-        #&& rm -rf /var/lib/apt/lists/*
 RUN locale-gen en_US.utf8 && \
 	cachebuster=b953b35 git clone --recursive https://github.com/mysociety/fixmystreet.git
 
@@ -14,25 +12,9 @@ WORKDIR /fixmystreet
 
 # Install packages
 RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
-#RUN apt-get install -y -q \
-#	make \
-#	jhead \
-#	liblocale-gettext-perl \
-#	memcached \
-#	perl \
-#	perlmagick \
-#	libmath-bigint-gmp-perl \
-#	gettext \
-#	ruby1.9.1 \
-#	postgresql \
-#	postgresql-server-dev-all \
-#	gnuplot \
-#	ttf-bitstream-vera \
-#	libexpat1-dev
 
 # Install prerequisite Perl modules
 RUN bin/install_perl_modules
-#RUN /fixmystreet/bin/cpanm -l /fixmystreet/local-carton Carton
 
 ENV PATH /fixmystreet/local-carton/bin:$PATH
 ENV PERL5LIB /fixmystreet/local-carton/lib/perl5
