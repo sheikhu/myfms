@@ -30,7 +30,7 @@ RUN bin/make_css
 ADD install-database.sh /tmp/install-database.sh
 RUN chmod +x /tmp/install-database.sh
 #ADD pgpass /root/.pgpass
-RUN chmod 0600 /root/.pgpass
+#RUN chmod 0600 /root/.pgpass
 
 # Setup config
 ADD general.yml /fixmystreet/conf/general.yml
