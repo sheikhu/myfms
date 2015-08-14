@@ -16,14 +16,9 @@ RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
 # Install prerequisite Perl modules
 RUN bin/install_perl_modules
 
-ENV PATH /fixmystreet/local-carton/bin:$PATH
-ENV PERL5LIB /fixmystreet/local-carton/lib/perl5
-RUN carton install --deployment --without uk --without zurich --without open311-endpoint
-RUN carton install Image::Magick
-
 # Install compass and generate CSS
 RUN gem install --user-install --no-ri --no-rdoc bundler
-RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install > --deployment --path ../gems --binstubs ../gem-bin
+RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install --deployment --path ../gems --binstubs ../gem-bin
 RUN bin/make_css
 
 # Copy shell script
@@ -31,6 +26,9 @@ ADD install-database.sh /tmp/install-database.sh
 RUN chmod +x /tmp/install-database.sh
 ADD pgpass /root/.pgpass
 RUN chmod 0600 /root/.pgpass
+
+# Reports
+#RUN bin/update-all-reports
 
 # Setup config
 ADD general.yml /fixmystreet/conf/general.yml
