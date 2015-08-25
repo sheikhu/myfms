@@ -1,13 +1,10 @@
 app:
   restart: always
   build: ./app
-#  image: fms:test
   links:
     - db:db
   expose:
     - 3000
-  ports:
-    - "3000:3000"
   volumes:
     - /fixmystreet
   command: bash -c "/fixmystreet/script/fixmystreet_app_server.pl -d --fork"
