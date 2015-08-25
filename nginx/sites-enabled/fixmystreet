@@ -5,18 +5,26 @@
 #
 # See our installation help at http://fixmystreet.org/
 
-upstream fixmystreet {
-    server app:3000;
-}
-
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server ipv6only=on;
+	server_name demo.fixmystreet.com;
 
-	server_name example.com;
+    location /mapit {
+        proxy_pass http://mapit.mysociety.org/;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /admin {
+        auth_basic "FixMyStreet admin interface";
+        auth_basic_user_file /fixmystreet/admin-htpasswd;
+        try_files $uri @catalyst;
+    }
+
+    location /down.html {
+        internal;
+    }
 
         location / {
-                proxy_pass http://fixmystreet/;
+                proxy_pass http://demo:3000/;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';
