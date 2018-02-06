@@ -1,29 +1,51 @@
-app:
-  restart: always
-  build: ./app
-  links:
-    - db:db
-  expose:
-    - 3000
-  ports:
-    - "3000:3000"
-  volumes:
-    - /fixmystreet
-  command: bash -c "/fixmystreet/script/fixmystreet_app_server.pl -d --fork"
+version: '2'
+services:
+    app:
+      restart: always
+      build: ./app
+      links:
+        - db
+        - maildev
+      expose:
+        - 3000
+      ports:
+        - "3000:3000"
+      volumes:
+        - /fixmystreet
+      command: bash -c "/fixmystreet/script/fixmystreet_app_server.pl -d --fork"
+      networks:
+        - default
 
-nginx:
-  restart: always
-  build: ./nginx/
-  ports:
-    - "80:80"
-  links:
-    - app:app
-  volumes_from:
-    - app
+    nginx:
+      restart: always
+      build: ./nginx/
+      ports:
+        - "80:80"
+      links:
+        - app
+      volumes_from:
+        - app
+      networks:
+        - default
 
-db:
-  restart: always
-  image: dalekurt/postgres:9.4
-  ports:
-    - "5432:5432"
-  env_file: db.env
+    maildev:
+        build: ./maildev
+        ports:
+            - "1080:80"
+            - "25:25"
+        networks:
+          - default        
+    db:
+      restart: always
+      image: dalekurt/postgres:9.4
+      ports:
+        - "5432:5432"
+      env_file: db.env
+      volumes:
+        - /var/lib/postgresql
+      networks:
+        - default
+
+networks:
+  default:
+    driver: "bridge"

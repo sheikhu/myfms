@@ -11,14 +11,15 @@ ENV LANG en_US.UTF-8
 WORKDIR /fixmystreet
 
 # Install packages
-RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
+# RUN xargs -a conf/packages.ubuntu-precise apt-get install -y -q
+RUN xargs -a conf/packages.generic apt-get install -y -q
 
 # Install prerequisite Perl modules
 RUN bin/install_perl_modules
 
 # Install compass and generate CSS
-RUN gem install --user-install --no-ri --no-rdoc bundler
-RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install --deployment --path ../gems --binstubs ../gem-bin
+# RUN gem install --user-install --no-ri --no-rdoc bundler
+# RUN $(ruby -rubygems -e 'puts Gem.user_dir')/bin/bundle install --deployment --path ../gems --binstubs ../gem-bin
 RUN bin/make_css
 
 # Copy shell script

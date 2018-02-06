@@ -49,16 +49,16 @@ SEND_REPORTS_ON_STAGING: 0
 
 # What to use as front page/alert example places placeholder
 # Defaults to High Street, Main Street
-EXAMPLE_PLACES: [ 'High Street', 'Main Street' ]
+EXAMPLE_PLACES: [ 'Dakar', 'Medina' ]
 
 # An array of languages for the site, in the following format:
 # <language code>,<pretty name>,<locale>
 LANGUAGES:
-  - 'en-gb,English,en_GB'
+  - 'fr-fr,French,fr_FR'
 
 # If you're running an installation that is being used in a different time zone
 # from the server, you can set the time zone here (standard time zone string)
-TIME_ZONE: ""
+TIME_ZONE: "Africa/Dakar"
 
 # File locations for uploaded photos and cached geocoding results.
 UPLOAD_DIR: '../upload/'
@@ -80,7 +80,7 @@ GEO_CACHE: '../cache/'
 # And then specify whichever type code have the boundaries you want:
 #   MAPIT_TYPES: [ 'O06' ]
 MAPIT_URL: 'http://global.mapit.mysociety.org/'
-MAPIT_TYPES: [ 'O06' ]
+MAPIT_TYPES: [ 'O03' ]
 
 # If you are using global MapIt, you might want to restrict FixMyStreet usage
 # to only one or more areas, rather than all O04, for example. Provide MapIt
@@ -127,7 +127,8 @@ BING_MAPS_API_KEY: ''
 #     lang: <language for results>
 #
 GEOCODING_DISAMBIGUATION: ''
-
+#country: 'SN'
+#town: 'Dakar'
 # The type of map you want to use. If left blank, the default is OpenStreetMap.
 # Other options are currently pretty UK specific, including "FMS" for UK
 # FixMyStreet.
@@ -159,7 +160,7 @@ ALLOWED_COBRANDS:
 
 # This is only used in "offensive report" emails to provide a link directly to
 # the admin interface. If wanted, set to the full URL of your admin interface.
-ADMIN_BASE_URL: ''
+ADMIN_BASE_URL: 'http://localhost:3000/manage'
 
 # How many items are returned in the GeoRSS feeds by default
 RSS_LIMIT: '20'
@@ -168,9 +169,9 @@ ALL_REPORTS_PER_PAGE: 100
 
 # If you wish to send email through a SMTP server elsewhere, change these
 # variables. SMTP_TYPE should be one of '', 'ssl' or 'tls'.
-SMTP_SMARTHOST: 'localhost'
+SMTP_SMARTHOST: 'maildev'
 SMTP_TYPE: ''
-SMTP_PORT: ''
+SMTP_PORT: '25'
 SMTP_USERNAME: ''
 SMTP_PASSWORD: ''
 
