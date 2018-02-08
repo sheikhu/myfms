@@ -6,7 +6,7 @@
 # See our installation help at http://fixmystreet.org/
 
 server {
-	server_name demo.fixmystreet.com;
+	server_name demo.fixmystreet.local;
 
     location /mapit {
         proxy_pass http://mapit.mysociety.org/;
@@ -24,7 +24,7 @@ server {
     }
 
         location / {
-                proxy_pass http://demo:3000/;
+                proxy_pass http://localhost:3000/;
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
                 proxy_set_header Connection 'upgrade';

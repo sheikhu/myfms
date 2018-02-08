@@ -54,6 +54,7 @@ EXAMPLE_PLACES: [ 'Dakar', 'Medina' ]
 # An array of languages for the site, in the following format:
 # <language code>,<pretty name>,<locale>
 LANGUAGES:
+  - 'en-gb,English,en_GB'
   - 'fr-fr,French,fr_FR'
 
 # If you're running an installation that is being used in a different time zone
@@ -160,7 +161,7 @@ ALLOWED_COBRANDS:
 
 # This is only used in "offensive report" emails to provide a link directly to
 # the admin interface. If wanted, set to the full URL of your admin interface.
-ADMIN_BASE_URL: 'http://localhost:3000/manage'
+ADMIN_BASE_URL: 'http://localhost:3000/admin'
 
 # How many items are returned in the GeoRSS feeds by default
 RSS_LIMIT: '20'

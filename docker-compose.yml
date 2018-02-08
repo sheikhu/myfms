@@ -1,6 +1,7 @@
 version: '2'
 services:
     app:
+      container_name: app
       restart: always
       build: ./app
       links:
@@ -20,7 +21,7 @@ services:
       restart: always
       build: ./nginx/
       ports:
-        - "80:80"
+        - "8080:80"
       links:
         - app
       volumes_from:
@@ -29,6 +30,7 @@ services:
         - default
 
     maildev:
+        container_name: maildev
         build: ./maildev
         ports:
             - "1080:80"
@@ -36,16 +38,21 @@ services:
         networks:
           - default        
     db:
+      container_name: db
       restart: always
       image: dalekurt/postgres:9.4
       ports:
         - "5432:5432"
       env_file: db.env
       volumes:
-        - /var/lib/postgresql
+        - db:/var/lib/postgresql
       networks:
         - default
 
 networks:
   default:
     driver: "bridge"
+
+volumes:
+  db:
+    driver: "local"
