@@ -54,7 +54,6 @@ EXAMPLE_PLACES: [ 'Dakar', 'Medina' ]
 # An array of languages for the site, in the following format:
 # <language code>,<pretty name>,<locale>
 LANGUAGES:
-  - 'en-gb,English,en_GB'
   - 'fr-fr,French,fr_FR'
 
 # If you're running an installation that is being used in a different time zone
@@ -81,7 +80,7 @@ GEO_CACHE: '../cache/'
 # And then specify whichever type code have the boundaries you want:
 #   MAPIT_TYPES: [ 'O06' ]
 MAPIT_URL: 'http://global.mapit.mysociety.org/'
-MAPIT_TYPES: [ 'O03' ]
+MAPIT_TYPES: [ 'O02' ]
 
 # If you are using global MapIt, you might want to restrict FixMyStreet usage
 # to only one or more areas, rather than all O04, for example. Provide MapIt
@@ -156,12 +155,12 @@ MAP_TYPE: 'OSM'
 # using DNS subdomains for example.
 ALLOWED_COBRANDS:
   - cobrand1
-  - cobrand2: 'hostname_substring2'
+  - fixmystreet: 'localhost'
   - cobrand3
 
 # This is only used in "offensive report" emails to provide a link directly to
 # the admin interface. If wanted, set to the full URL of your admin interface.
-ADMIN_BASE_URL: 'http://localhost:3000/admin'
+ADMIN_BASE_URL: 'http://localhost:3000/'
 
 # How many items are returned in the GeoRSS feeds by default
 RSS_LIMIT: '20'
