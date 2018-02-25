@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Dale-Kurt Murray "dalekurt.murray@gmail.com"
+LABEL Dale-Kurt Murray "dalekurt.murray@gmail.com"
 
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q git
 
